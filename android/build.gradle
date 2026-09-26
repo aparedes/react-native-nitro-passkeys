@@ -140,7 +140,7 @@ dependencies {
   implementation project(":react-native-nitro-modules")
   implementation "androidx.credentials:credentials:1.6.0"
   implementation "androidx.credentials:credentials-play-services-auth:1.6.0"
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2" // CredentialManager APIs are suspend funs
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0" // CredentialManager APIs are suspend funs
 
   testImplementation "junit:junit:4.13.2"
   testImplementation "org.json:json:20240303" // Android's org.json is a stub on the JVM
