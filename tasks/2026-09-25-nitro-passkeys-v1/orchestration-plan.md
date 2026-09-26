@@ -356,34 +356,35 @@ credential lookup on the server.
 
 #### 1. Types
 **File**: `src/types.ts`
-- [ ] Create it **verbatim** from the SPEC §3.2 code block (SPEC lines 189-293), including the two deviation comments
+- [x] Create it **verbatim** from the SPEC §3.2 code block (SPEC lines 189-293), including the two deviation comments
 
 #### 2. Validation
 **File**: `src/validate.ts` (pure TS; no Node or React Native imports)
-- [ ] Export `isBase64URL(value: unknown): value is string`. It returns true only when `value` is a non-empty string, matches `/^[A-Za-z0-9_-]+={0,2}$/`, has an unpadded length with `% 4 !== 1`, and, when `=` padding is present, has a total length `% 4 === 0`. It rejects `+`, `/` and whitespace.
-- [ ] Export `base64URLByteLength(value: string): number` = `Math.floor(unpaddedLength * 3 / 4)`
-- [ ] Export `validateCreationOptions(options: unknown): string | undefined`. It returns a human-readable reason for the first failing rule, or `undefined`. The rules are exactly SPEC §3.4 "Creation options" (SPEC lines 363-371):
+- [x] Export `isBase64URL(value: unknown): value is string`. It returns true only when `value` is a non-empty string, matches `/^[A-Za-z0-9_-]+={0,2}$/`, has an unpadded length with `% 4 !== 1`, and, when `=` padding is present, has a total length `% 4 === 0`. It rejects `+`, `/` and whitespace.
+- [x] Export `base64URLByteLength(value: string): number` = `Math.floor(unpaddedLength * 3 / 4)`
+- [x] Export `validateCreationOptions(options: unknown): string | undefined`. It returns a human-readable reason for the first failing rule, or `undefined`. The rules are exactly SPEC §3.4 "Creation options" (SPEC lines 363-371):
+  > Deviation: stricter than spelled out: non-array `pubKeyCredParams`/`excludeCredentials`/`allowCredentials` are rejected; response `id`/`rawId`/`response.*` must be non-empty strings. `parse*Response` uses `??= {}` (a `null` `clientExtensionResults` also becomes `{}`).
   - `rp.id` missing, not a string or empty. A non-object `options` or `rp` also fails.
   - `challenge`, `user.id` or `user.name` missing or empty
   - `challenge`, `user.id` or any `excludeCredentials[].id` not base64url
   - `user.id` decodes to 0 bytes or more than 64 bytes
   - `pubKeyCredParams` is a non-empty array with no entry where `alg === -7`. An absent or empty array passes.
-- [ ] Export `validateRequestOptions(options: unknown): string | undefined`, covering SPEC lines 373-378:
+- [x] Export `validateRequestOptions(options: unknown): string | undefined`, covering SPEC lines 373-378:
   - `rpId` missing, `undefined` or empty. `{ rpId: undefined }` must fail.
   - `challenge` missing, empty or not base64url
   - any `allowCredentials[].id` not base64url
-- [ ] Export `validateRegistrationResponse(value: unknown): string | undefined` and `validateAuthenticationResponse(value: unknown): string | undefined`, covering SPEC lines 380-386: `id`/`rawId` missing or `id !== rawId`; `type !== 'public-key'`; missing required `response.*` fields
+- [x] Export `validateRegistrationResponse(value: unknown): string | undefined` and `validateAuthenticationResponse(value: unknown): string | undefined`, covering SPEC lines 380-386: `id`/`rawId` missing or `id !== rawId`; `type !== 'public-key'`; missing required `response.*` fields
 
 #### 3. Response parsing (the single path used by the entry and by `roundtrip.test.ts`)
 **File**: `src/response.ts` (not re-exported from `index.ts`)
-- [ ] Export `parseRegistrationResponse(raw: string): RegistrationResponseJSON` and `parseAuthenticationResponse(raw: string): AuthenticationResponseJSON`. Each does the following:
+- [x] Export `parseRegistrationResponse(raw: string): RegistrationResponseJSON` and `parseAuthenticationResponse(raw: string): AuthenticationResponseJSON`. Each does the following:
   1. Run `JSON.parse`. On failure, throw `new PasskeyError('unknown', 'Malformed registration response: not JSON')` (or `authentication`).
   2. Run the matching `validate*Response`. On failure, throw `new PasskeyError('unknown', \`Malformed registration response: ${reason}\`)`.
   3. If `clientExtensionResults` is missing, set it to `{}`. This is the only change; don't add, remove or re-encode anything else.
 
 #### 4. Error class
 **File**: `src/PasskeyError.ts`
-- [ ] Implement it as specified in SPEC §3.3 and §6:
+- [x] Implement it as specified in SPEC §3.3 and §6:
   ```ts
   export type PasskeyErrorCode =
     | 'canceled' | 'noCredentials' | 'alreadyRegistered' | 'domainNotAssociated'
@@ -417,7 +418,7 @@ credential lookup on the server.
 
 #### 5. Public entry
 **File**: `src/index.ts` (replace the placeholder)
-- [ ] Implement SPEC §3.3:
+- [x] Implement SPEC §3.3:
   ```ts
   import { NitroModules } from 'react-native-nitro-modules';
   import { PasskeyError } from './PasskeyError';
@@ -448,7 +449,7 @@ credential lookup on the server.
 
 #### 6. Bun tests
 **Files**: `src/__tests__/*`
-- [ ] `PasskeyError.test.ts` covers every JS-mapped row of SPEC §6 (SPEC lines 554-575):
+- [x] `PasskeyError.test.ts` covers every JS-mapped row of SPEC §6 (SPEC lines 554-575):
   - `asauth-1000`, `1001`, `1002`, `1003`, `1004`, `1005` and `1006`
   - an unknown numeric token (`asauth-1099` → `unknown`)
   - every named token, including `alreadyRegistered` and `domainNotAssociated`
@@ -458,7 +459,8 @@ credential lookup on the server.
   - no token, which keeps the message
   - non-`Error` values (`undefined`, a string, `42`)
   - the same instance returned for a `PasskeyError`
-- [ ] `validate.test.ts` covers every §3.4 rule, both passing and failing. Build the passing cases from real simplewebauthn output (`import { generateRegistrationOptions, generateAuthenticationOptions } from '@simplewebauthn/server'`), mirroring WC's option sets:
+- [x] `validate.test.ts` covers every §3.4 rule, both passing and failing. Build the passing cases from real simplewebauthn output (`import { generateRegistrationOptions, generateAuthenticationOptions } from '@simplewebauthn/server'`), mirroring WC's option sets:
+  > Deviation: the "without rpID" case casts `{ allowCredentials: [] }` through `unknown` since v14 types require `rpID`.
   - registration: `rpID: 'example.com'`, `attestationType: 'none'`, `authenticatorSelection: { residentKey: 'required', userVerification: 'preferred' }`, and a non-empty `excludeCredentials`
   - authentication: `allowCredentials: []` with `rpID`
   - authentication: `userVerification: 'required'` with a non-empty `allowCredentials`
@@ -467,7 +469,7 @@ credential lookup on the server.
   - `generateAuthenticationOptions` without `rpID`, which must fail. It yields `rpId: undefined`.
   - `pubKeyCredParams: [{alg: -8, type: 'public-key'}]` fails; the default `[-8, -7, -257]` passes
   - `+`, `/` and whitespace in a challenge fail
-- [ ] `index.test.ts` tests the wrappers with no device, using the ASPEC `wrappers.test.ts` pattern (ASPEC lines ~464-484):
+- [x] `index.test.ts` tests the wrappers with no device, using the ASPEC `wrappers.test.ts` pattern (ASPEC lines ~464-484):
   - call `mock.module('react-native-nitro-modules', () => ({ NitroModules: { createHybridObject: () => fake } }))` **before** `const mod = await import('../index')`
   - `fake` has `isSupported` and `mock()`-backed `create`/`get`
   - cases:
@@ -480,12 +482,14 @@ credential lookup on the server.
     - a missing `clientExtensionResults` becomes `{}`
     - extra fields (`publicKey`, `publicKeyAlgorithm`, `authenticatorData`) pass through untouched
     - `JSON.stringify(options)` is what native receives
-- [ ] `roundtrip.test.ts`:
+- [x] `roundtrip.test.ts`:
+  > Deviation: uses Bun APIs (`Bun.Glob`, `Bun.file().json()`) instead of `node:fs`/`node:path`, which oxlint `no-nodejs-modules` rejects.
   - For each `fixtures/*-registration.json`, `parseRegistrationResponse(fixture.raw)` deep-equals `JSON.parse(fixture.raw)`, with `clientExtensionResults ?? {}` applied. `verifyRegistrationResponse({ response, expectedChallenge, expectedOrigin, expectedRPID, requireUserVerification: false })` gives `verified: true`.
   - For each `*-authentication.json`, load its `registrationFixture`, verify that first, and build `credential: { id: registrationInfo.credential.id, publicKey: registrationInfo.credential.publicKey, counter: registrationInfo.credential.counter }`. Then `verifyAuthenticationResponse(...)` gives `verified: true`.
   - The fixture format is in this plan's "Shared fixture format" section; copy that JSON shape into a comment at the top of the test.
   - **When `src/__tests__/fixtures/` has no files, the suite registers a single `test.skip('no fixtures recorded yet — run example/server --record', …)`.** It must not fail. Don't create fixtures.
-- [ ] `types-compat.ts` (not a test file; checked by `tsc --noEmit`) asserts assignability at compile time, as in SPEC §7.4 (SPEC lines 645-651):
+- [x] `types-compat.ts` (not a test file; checked by `tsc --noEmit`) asserts assignability at compile time, as in SPEC §7.4 (SPEC lines 645-651):
+  > Deviation: uses `declare const` + exported bindings rather than `{} as` casts; all four types import from the `@simplewebauthn/server` root.
   ```ts
   import type * as SWA from '@simplewebauthn/server';
   import type * as Ours from '../types';
@@ -496,20 +500,20 @@ credential lookup on the server.
   export {};
   ```
   To satisfy `noUnusedLocals`, export the bindings or use `void`. If simplewebauthn doesn't re-export a type from its root, import it from `@simplewebauthn/server/esm/types` (check `WC`'s installed copy for the path).
-- [ ] Create an empty `src/__tests__/fixtures/.gitkeep`
+- [x] Create an empty `src/__tests__/fixtures/.gitkeep`
 
 #### 7. CI
 **File**: `.github/workflows/static-checks.yml`
-- [ ] Add a `Test (bun)` step running `bun test src` after `Typecheck`, and add `'bunfig.toml'` to both `paths:` filters
+- [x] Add a `Test (bun)` step running `bun test src` after `Typecheck`, and add `'bunfig.toml'` to both `paths:` filters
 
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] Tests: `bun test src` (the roundtrip suite reports as skipped)
-- [ ] Typecheck, including `types-compat.ts`: `bun run typecheck`
-- [ ] Build: `bun run build`, and `ls lib/typescript/src` shows no `__tests__`
-- [ ] Lint: `bunx oxlint --deny-warnings`
-- [ ] Format: `bunx oxfmt --check`
+- [x] Tests: `bun test src` (the roundtrip suite reports as skipped)
+- [x] Typecheck, including `types-compat.ts`: `bun run typecheck`
+- [x] Build: `bun run build`, and `ls lib/typescript/src` shows no `__tests__`
+- [x] Lint: `bunx oxlint --deny-warnings`
+- [x] Format: `bunx oxfmt --check`
 
 #### Manual Verification:
 - [ ] Review `src/index.ts` and confirm the HybridObject isn't exported and `export type * from './types'` exists

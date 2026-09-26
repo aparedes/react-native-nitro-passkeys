@@ -17,6 +17,7 @@ on:
       - '.oxlintrc.json'
       - '.oxfmtrc.json'
       - '**/bun.lock'
+      - 'bunfig.toml'
   pull_request:
     paths:
       - '.github/workflows/static-checks.yml'
@@ -28,6 +29,7 @@ on:
       - '.oxlintrc.json'
       - '.oxfmtrc.json'
       - '**/bun.lock'
+      - 'bunfig.toml'
   workflow_dispatch:
 
 concurrency:
@@ -53,3 +55,6 @@ jobs:
 
       - name: Typecheck
         run: bun run typecheck
+
+      - name: Test (bun)
+        run: bun test src
