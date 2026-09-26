@@ -31,5 +31,5 @@
     "**/metro.config.js",
     "**/tsconfig.json"
   ],
-  "include": ["src/**/*", "nitrogen/**/*.json"]
+  "include": ["src/**/*", "example/server/**/*", "nitrogen/**/*.json"]
 }

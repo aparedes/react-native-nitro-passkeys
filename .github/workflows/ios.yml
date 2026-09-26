@@ -6,8 +6,8 @@ name: Build & Test iOS
 # now: the harness needs the built .app anyway, so building it twice bought
 # nothing. Triggers below are the union of what those two workflows watched.
 #
-# The harness step is added back in a later phase; for now this job only builds
-# the example app.
+# The job is named "Harness Tests (iOS)" so a required status check on `main`
+# resolves to it.
 #
 # Set the repository variable RUN_HARNESS_TESTS=false to build without running
 # the harness suite — see the comment on `HARNESS_ENABLED` below.
@@ -79,7 +79,7 @@ concurrency:
 
 jobs:
   build-and-test:
-    name: Build (iOS)
+    name: Harness Tests (iOS)
     runs-on: macos-26
     env:
       # Kill switch. The app still gets built and the job still goes green;
@@ -154,6 +154,14 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 17' \
             test \
             CODE_SIGNING_ALLOWED=NO | xcpretty
+
+      - name: Run Harness Tests
+        if: env.HARNESS_ENABLED == 'true'
+        uses: callstackincubator/react-native-harness@v1.2.0
+        with:
+          runner: iphone-17
+          app: ${{ github.workspace }}/example/ios/build/Build/Products/Debug-iphonesimulator/NitroPasskeysExample.app
+          projectRoot: example
 
       - name: Note skipped harness tests
         if: env.HARNESS_ENABLED != 'true'

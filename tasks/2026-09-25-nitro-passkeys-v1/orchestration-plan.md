@@ -809,7 +809,8 @@ is the spike cases, which the phase drops if needed.
 
 #### 1. Test server
 **File**: `example/server/index.ts` (plus `example/server/README.md`)
-- [ ] Write a Bun script (`Bun.serve`) modelled on `WC/apps/web/app/api/_flows.ts` (the flows at `:116-120,182-194,232-251,306-334`) and `_webauthn.ts:40-49`:
+- [x] Write a Bun script (`Bun.serve`) modelled on `WC/apps/web/app/api/_flows.ts` (the flows at `:116-120,182-194,232-251,306-334`) and `_webauthn.ts:40-49`:
+  > Deviation: server sets `userDisplayName` to the username; `--record` fixture `options` is the options object the server sent, matched by challenge.
   - Env:
     - `RP_ID` (required)
     - `PORT` (default `8787`)
@@ -828,12 +829,12 @@ is the spike cases, which the phase drops if needed.
   - `GET /.well-known/assetlinks.json` returns the SPEC §8.4 JSON (SPEC lines 709-718) for `ANDROID_PACKAGE` and the fingerprint
   - `--record`: after each successful verify, write `src/__tests__/fixtures/<platform>-<registration|authentication>.json` in this plan's "Shared fixture format". `platform` comes from the request body field `platform` that the app sends. `raw` is `JSON.stringify(<the response body the app posted>)`, and `registrationFixture` is set for authentication.
   - Document running it from the repo root with `bun example/server/index.ts --record` and exposing it over HTTPS at `RP_ID` with a tunnel
-- [ ] Add a root `package.json` script `"example:server": "bun example/server/index.ts"`
+- [x] Add a root `package.json` script `"example:server": "bun example/server/index.ts"`
 
 #### 2. Example app UI
 **Files**: `example/App.tsx`, `example/src/config.ts`
-- [ ] `example/src/config.ts` exports `SERVER_URL` (default `'https://passkeys.example.com'`, with a comment saying to set it to `https://<RP_ID>`)
-- [ ] `App.tsx`:
+- [x] `example/src/config.ts` exports `SERVER_URL` (default `'https://passkeys.example.com'`, with a comment saying to set it to `https://<RP_ID>`)
+- [x] `App.tsx`:
   - a username `TextInput`
   - a **Register** button: `POST /register/options`, then `createPasskey(options)`, then `POST /register/verify` with `{ username, platform: Platform.OS, response }`
   - a **Log in** button, following the same pattern with `getPasskey`
@@ -842,28 +843,30 @@ is the spike cases, which the phase drops if needed.
 
 #### 3. iOS Associated Domains
 **Files**: `example/ios/NitroPasskeysExample/NitroPasskeysExample.entitlements`, the project build settings
-- [ ] Create the entitlements file with `com.apple.developer.associated-domains` = `["webcredentials:$(PASSKEYS_RP_ID)?mode=developer"]`
-- [ ] In the app target's build settings, set `CODE_SIGN_ENTITLEMENTS` to that file and a user-defined `PASSKEYS_RP_ID = passkeys.example.com`, using the `xcodeproj` gem via a `ruby -e` one-off (not a committed script)
-- [ ] The iOS simulator build must still succeed with the default `PASSKEYS_RP_ID`
+- [x] Create the entitlements file with `com.apple.developer.associated-domains` = `["webcredentials:$(PASSKEYS_RP_ID)?mode=developer"]`
+- [x] In the app target's build settings, set `CODE_SIGN_ENTITLEMENTS` to that file and a user-defined `PASSKEYS_RP_ID = passkeys.example.com`, using the `xcodeproj` gem via a `ruby -e` one-off (not a committed script)
+- [x] The iOS simulator build must still succeed with the default `PASSKEYS_RP_ID`
 
 #### 4. Harness suites
 **File**: `example/__tests__/passkeys.harness.ts`
-- [ ] Using `describe`/`it`/`expect` from `react-native-harness` (see `IP/example/__tests__/nitro-image-pipeline.harness.ts` for a non-UI example):
+- [x] Using `describe`/`it`/`expect` from `react-native-harness` (see `IP/example/__tests__/nitro-image-pipeline.harness.ts` for a non-UI example):
   - `isPasskeySupported()` returns `true`
   - `createPasskey` with an empty `rp.id` rejects with a `PasskeyError` whose code is `invalidOptions`
   - `getPasskey` with `rpId: undefined` → `invalidOptions`
   - an unpadded or invalid challenge (`'a+b'`) → `invalidOptions`
   - a user id over 64 bytes → `invalidOptions`
   - every rejection is `instanceof PasskeyError`
-- [ ] **Spike cases, where a sheet should not appear.** Race each against a 15-second timeout.
+- [x] **Spike cases, where a sheet should not appear.** Race each against a 15-second timeout.
   - (iOS) `createPasskey` with `rp.id: 'nitro-passkeys-unassociated.invalid'` and valid other fields rejects with `domainNotAssociated`
   - (Android) `getPasskey` with `rpId: 'nitro-passkeys-unassociated.invalid'` rejects with one of `noCredentials`, `domainNotAssociated` or `unsupported` (assert the code is in that set)
+  > Deviation: the Android spike was DELETED: on the Pixel_API_36 emulator it opened `CredentialChooserActivity` (a system sheet) and hung the run, so that path stays manual. The iOS spike is kept (`createPasskey` with an unassociated rp.id → `domainNotAssociated`, ~8 s, no sheet, passed 3/3 runs); the file records this in a comment.
 
   Run each spike locally. **If a case shows a system sheet or times out, delete it** and record a `> Deviation:` note saying the path stays manual. Don't commit a flaky test.
 
 #### 5. CI harness
 **Files**: `.github/workflows/ios.yml`, `.github/workflows/android.yml`
-- [ ] Re-add the harness steps from `IP/.github/workflows/ios.yml` and `android.yml` after the build and unit-test steps, renamed to `NitroPasskeysExample` and `com.nitropasskeysexample`:
+- [x] Re-add the harness steps from `IP/.github/workflows/ios.yml` and `android.yml` after the build and unit-test steps, renamed to `NitroPasskeysExample` and `com.nitropasskeysexample`:
+  > Deviation: harness steps are gated on the existing `HARNESS_ENABLED` (var + `workflow_dispatch` input from IP), which already implements the `RUN_HARNESS_TESTS` kill-switch; the "Note skipped harness tests" steps remain. CI edits are unexecuted.
   - the `callstackincubator/react-native-harness@v1.2.0` action pointed at the built `.app` (iOS)
   - the `reactivecircus/android-emulator-runner@v2` block (Android)
   - the `RUN_HARNESS_TESTS` kill-switch
@@ -873,14 +876,16 @@ is the spike cases, which the phase drops if needed.
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] Typecheck the root and the example: `bun run typecheck`, then `bunx tsc --noEmit -p example`
-- [ ] Lint and format: `bunx oxlint --deny-warnings` and `bunx oxfmt --check`
-- [ ] Bun tests still pass (roundtrip still skipped): `bun test src`
-- [ ] iOS build with entitlements: `xcodebuild -workspace example/ios/NitroPasskeysExample.xcworkspace -scheme NitroPasskeysExample -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17' build`
-- [ ] Android build: `example/android/gradlew -p example/android assembleDebug`
-- [ ] The server starts and serves AASA: `env RP_ID=localhost ANDROID_CERT_SHA256=00:11 bun example/server/index.ts` in the background, then `curl -s localhost:8787/.well-known/apple-app-site-association` returns JSON; stop the server afterwards
-- [ ] iOS harness (app installed on the simulator first, via `bun run --cwd example ios`): `env HARNESS_IOS_VERSION=27.0 bun run --cwd example test:harness:ios`
-- [ ] Android harness (emulator `Medium_Phone_API_36.1` running with the app installed): `bun run --cwd example test:harness:android`
+- [x] Typecheck the root and the example: `bun run typecheck`, then `bunx tsc --noEmit -p example`
+  > Deviation: TS 7.0.2 errors on `baseUrl` (TS5102), so `"baseUrl": "."` was removed from `example/tsconfig.json` (relative `paths` still resolve) and `server` added to its `exclude`; root `tsconfig.json` `include` gained `example/server/**/*` so the server is typechecked with bun types.
+- [x] Lint and format: `bunx oxlint --deny-warnings` and `bunx oxfmt --check`
+- [x] Bun tests still pass (roundtrip still skipped): `bun test src`
+- [x] iOS build with entitlements: `xcodebuild -workspace example/ios/NitroPasskeysExample.xcworkspace -scheme NitroPasskeysExample -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17' build`
+- [x] Android build: `example/android/gradlew -p example/android assembleDebug`
+- [x] The server starts and serves AASA: `env RP_ID=localhost ANDROID_CERT_SHA256=00:11 bun example/server/index.ts` in the background, then `curl -s localhost:8787/.well-known/apple-app-site-association` returns JSON; stop the server afterwards
+- [x] iOS harness (app installed on the simulator first, via `bun run --cwd example ios`): `env HARNESS_IOS_VERSION=27.0 bun run --cwd example test:harness:ios`
+- [x] Android harness (emulator `Medium_Phone_API_36.1` running with the app installed): `bun run --cwd example test:harness:android`
+  > Deviation: ran on `Pixel_API_36` (5/5 passed, 2 runs) because `Medium_Phone_API_36.1` is ~92% full (`INSTALL_FAILED_INSUFFICIENT_STORAGE`); committed `rn-harness.config.mjs` still names `Medium_Phone_API_36.1` (CI uses a fresh AVD). iOS harness ran with `HARNESS_METRO_PORT=8082` (another Metro held 8081): 6/6 passed, 3 runs.
 
 #### Manual Verification:
 - [ ] Run the server over an HTTPS tunnel with `--record`, set `PASSKEYS_RP_ID` and `SERVER_URL` to its host, then register and log in on an iOS device. The server prints `verified: true` for both.

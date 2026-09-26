@@ -10,8 +10,8 @@ name: Build & Test Android
 # `abiFilters` are configured) and runs the harness against it. See
 # `ANDROID_ABIS` below for which ABIs, and when.
 #
-# The harness step is added back in a later phase; for now this job only builds
-# the example app.
+# The job is named "Harness Tests (Android)" so a required status check on
+# `main` resolves to it.
 #
 # Set the repository variable RUN_HARNESS_TESTS=false to build without running
 # the harness suite — see the comment on `HARNESS_ENABLED` below.
@@ -72,7 +72,7 @@ concurrency:
 
 jobs:
   build-and-test:
-    name: Build (Android)
+    name: Harness Tests (Android)
     runs-on: ubuntu-latest
     env:
       # Kill switch. The APK still gets built and the job still goes green;
@@ -134,6 +134,20 @@ jobs:
       - name: Stop Gradle daemon
         working-directory: example/android
         run: ./gradlew --stop
+
+      - name: Run Harness Tests
+        if: env.HARNESS_ENABLED == 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          arch: x86_64
+          target: google_apis
+          avd-name: Medium_Phone_API_36.1
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            adb reverse tcp:8081 tcp:8081
+            adb install ${{ github.workspace }}/example/android/app/build/outputs/apk/debug/app-debug.apk
+            cd example && bunx react-native-harness --harnessRunner medium_phone_api_36.1
 
       - name: Note skipped harness tests
         if: env.HARNESS_ENABLED != 'true'

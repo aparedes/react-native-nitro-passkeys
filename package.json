@@ -13,6 +13,7 @@
     "lint:fix": "oxlint --fix && oxfmt",
     "format": "oxfmt",
     "test": "bun test src",
+    "example:server": "bun example/server/index.ts",
     "clean": "git clean -dfX",
     "prepare": "lefthook install || true",
     "release": "semantic-release",
