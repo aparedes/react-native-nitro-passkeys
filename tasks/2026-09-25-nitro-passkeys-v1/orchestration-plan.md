@@ -919,7 +919,8 @@ medium (briefing guidance). The content is fully specified; the care needed is i
 
 #### 1. README
 **File**: `README.md`
-- [ ] Write sections 1–8 exactly as SPEC §8 lists them (SPEC lines 686-749):
+- [x] Write sections 1–8 exactly as SPEC §8 lists them (SPEC lines 686-749):
+  > Deviation: README adds a 7-row error-code summary table before the condensed SPEC §6 table, documents the in-flight rejection and the extra iOS-ignored fields in Platform notes, and shows `bun run example:server --record` (no `--`). `oxfmt` ignores `README.md` (no target files), so it was hand-formatted, not formatter-checked. The iOS "Settings > Developer > Associated Domains Development" menu name was not verified against Apple docs.
   1. Install
   2. rpID equals domain
   3. iOS Associated Domains
@@ -928,14 +929,14 @@ medium (briefing guidance). The content is fully specified; the care needed is i
   6. Usage, showing simplewebauthn server calls with `rpID` passed to **both** option generators
   7. Errors: the §6 table plus the `catch` idiom, and `alreadyRegistered` guidance
   8. Platform notes
-- [ ] Deviation from SPEC: under Install, note that **no R8 rule is needed**, because `credentials-play-services-auth` ships its own. Don't mention a `consumer-rules.pro`.
-- [ ] Add a short "Example app & test server" section linking to `example/server/README.md`, including the `?mode=developer` note and how to set `PASSKEYS_RP_ID`
-- [ ] Add a "Development" section listing the real commands: `bun test src`, `bun run typecheck`, `bun run build`, `bun run codegen`, the XCTest `xcodebuild test …` command, `./gradlew :react-native-nitro-passkeys:testDebugUnitTest` (from `example/android`), and the `test:harness:*` scripts with `HARNESS_IOS_VERSION`
+- [x] Deviation from SPEC: under Install, note that **no R8 rule is needed**, because `credentials-play-services-auth` ships its own. Don't mention a `consumer-rules.pro`.
+- [x] Add a short "Example app & test server" section linking to `example/server/README.md`, including the `?mode=developer` note and how to set `PASSKEYS_RP_ID`
+- [x] Add a "Development" section listing the real commands: `bun test src`, `bun run typecheck`, `bun run build`, `bun run codegen`, the XCTest `xcodebuild test …` command, `./gradlew :react-native-nitro-passkeys:testDebugUnitTest` (from `example/android`), and the `test:harness:*` scripts with `HARNESS_IOS_VERSION`
 
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] Every command in the README's "Development" section exists: `bun run` lists `typecheck`, `build`, `codegen`, `test` and `example:server`
+- [x] Every command in the README's "Development" section exists: `bun run` lists `typecheck`, `build`, `codegen`, `test` and `example:server`
 
 #### Manual Verification:
 - [ ] The README reads correctly against SPEC §8, and every code sample is valid
