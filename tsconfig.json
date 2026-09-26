@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-native",
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "noEmit": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "esnext",
+    "types": ["bun"],
+    "verbatimModuleSyntax": true
+  },
+  "exclude": [
+    "**/node_modules",
+    "**/lib",
+    "**/.eslintrc.js",
+    "**/.prettierrc.js",
+    "**/jest.config.js",
+    "**/babel.config.js",
+    "**/metro.config.js",
+    "**/tsconfig.json"
+  ],
+  "include": ["src/**/*", "nitrogen/**/*.json"]
+}
