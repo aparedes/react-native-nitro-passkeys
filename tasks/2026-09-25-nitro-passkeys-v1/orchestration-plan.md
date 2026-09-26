@@ -697,7 +697,7 @@ to release on every path.
 
 #### 1. Error token mapper
 **File**: `android/src/main/java/com/margelo/nitro/nitropasskeys/PasskeyErrorToken.kt`
-- [ ] Add `object PasskeyErrorToken` with `fun token(error: Throwable): String`, a pure function with no Android framework calls. Check in this order, so each case is matched before the more general ones:
+- [x] Add `object PasskeyErrorToken` with `fun token(error: Throwable): String`, a pure function with no Android framework calls. Check in this order, so each case is matched before the more general ones:
   1. `CreatePublicKeyCredentialDomException`:
      - `domError` `InvalidStateError` → `"alreadyRegistered"`
      - otherwise map with `domToken(domError)`
@@ -723,13 +723,14 @@ to release on every path.
   - anything else → `"unknown"`
 
   The classes live in `androidx.credentials.exceptions.*`, `androidx.credentials.exceptions.publickeycredential.*` and `androidx.credentials.exceptions.domerrors.*`.
-- [ ] Add `fun message(error: Throwable): String`, which returns `"[Passkeys:${token(error)}] ${error.message ?: error.javaClass.simpleName}"`
+- [x] Add `fun message(error: Throwable): String`, which returns `"[Passkeys:${token(error)}] ${error.message ?: error.javaClass.simpleName}"`
 
 #### 2. Hybrid object
 **File**: `android/src/main/java/com/margelo/nitro/nitropasskeys/HybridNitroPasskeys.kt` (replace the stub bodies)
-- [ ] `override val isSupported: Boolean get() = Build.VERSION.SDK_INT >= 28`
-- [ ] Add `private val inFlight = AtomicBoolean(false)` and `private val mainScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)`
-- [ ] `create(creationOptionsJson)`:
+- [x] `override val isSupported: Boolean get() = Build.VERSION.SDK_INT >= 28`
+- [x] Add `private val inFlight = AtomicBoolean(false)` and `private val mainScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)`
+- [x] `create(creationOptionsJson)`:
+  > Deviation: the `inFlight` guard, `Promise.async(mainScope)`, `[Passkeys:` passthrough and rethrow live in one private `runExclusive(block)` shared by `create` and `get`; behaviour as specified. A coroutine `CancellationException` is caught as `Throwable` and rethrown as `[Passkeys:unknown]`.
   - If `!inFlight.compareAndSet(false, true)`, return `Promise.rejected(Error("[Passkeys:unknown] A passkey request is already in progress"))`.
   - Otherwise return `Promise.async(mainScope) { try { … } finally { inFlight.set(false) } }`. Inside the `try`:
     - `val activity = NitroModules.applicationContext?.currentActivity ?: throw Error("[Passkeys:unknown] No current Activity")`
@@ -737,18 +738,18 @@ to release on every path.
     - call `CredentialManager.create(activity).createCredential(activity, request)`
     - cast to `CreatePublicKeyCredentialResponse` and return `registrationResponseJson` **verbatim**; a different type → `Error("[Passkeys:unknown] Unexpected response type")`
   - Catch `Throwable` and rethrow `Error(PasskeyErrorToken.message(e))`, but rethrow an error whose message already contains `[Passkeys:` as-is.
-- [ ] `get(requestOptionsJson)` has the same structure:
+- [x] `get(requestOptionsJson)` has the same structure:
   - `GetCredentialRequest(listOf(GetPublicKeyCredentialOption(requestJson = requestOptionsJson)))`, then `getCredential(activity, request)`
   - `result.credential as? PublicKeyCredential ?: throw Error("[Passkeys:unknown] Unexpected credential type")`, then return `authenticationResponseJson` verbatim
-- [ ] Don't parse or rewrite the JSON in Kotlin
+- [x] Don't parse or rewrite the JSON in Kotlin
 
 #### 3. JVM unit tests
 **Files**: `android/build.gradle`, `android/src/test/java/com/margelo/nitro/nitropasskeys/PasskeyErrorTokenTest.kt`
-- [ ] In `android/build.gradle`:
+- [x] In `android/build.gradle`:
   - add `testImplementation "junit:junit:4.13.2"`
   - add `testImplementation "org.json:json:20240303"`, because Android's `org.json` is a stub on the JVM
   - add `android { testOptions { unitTests.returnDefaultValues = true } }`
-- [ ] In `PasskeyErrorTokenTest.kt`, write one JUnit test per Android row of SPEC §6 (SPEC lines 564-572):
+- [x] In `PasskeyErrorTokenTest.kt`, write one JUnit test per Android row of SPEC §6 (SPEC lines 564-572):
   - `CreatePublicKeyCredentialDomException(InvalidStateError(), "x")` → `alreadyRegistered`
   - `GetPublicKeyCredentialDomException(InvalidStateError(), "x")` → `unknown`
   - `NotAllowedError`, `AbortError` and `TimeoutError` on both the create and the get DOM exception → `canceled`
@@ -765,15 +766,15 @@ to release on every path.
 
 #### 4. CI
 **File**: `.github/workflows/android.yml`
-- [ ] Before `assembleDebug`, add a step `Unit tests (JUnit)` that runs `./gradlew :react-native-nitro-passkeys:testDebugUnitTest --no-daemon` from `example/android`
+- [x] Before `assembleDebug`, add a step `Unit tests (JUnit)` that runs `./gradlew :react-native-nitro-passkeys:testDebugUnitTest --no-daemon` from `example/android`
 
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] JUnit: `example/android/gradlew -p example/android :react-native-nitro-passkeys:testDebugUnitTest`
-- [ ] Android build: `example/android/gradlew -p example/android assembleDebug`
-- [ ] The JS layer is unaffected: `bun test src`
-- [ ] ktfmt check: `ktfmt --dry-run --set-exit-if-changed android/src` (skip if `ktfmt` isn't installed, and say so)
+- [x] JUnit: `example/android/gradlew -p example/android :react-native-nitro-passkeys:testDebugUnitTest`
+- [x] Android build: `example/android/gradlew -p example/android assembleDebug`
+- [x] The JS layer is unaffected: `bun test src`
+- [x] ktfmt check: `ktfmt --dry-run --set-exit-if-changed android/src` (skip if `ktfmt` isn't installed, and say so)
 
 #### Manual Verification:
 - [ ] Reading the code confirms `inFlight` is released on every path, including when the constructor throws and when there is no Activity

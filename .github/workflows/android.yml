@@ -120,6 +120,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('example/android/**/*.gradle*') }}
           restore-keys: ${{ runner.os }}-gradle-
 
+      - name: Unit tests (JUnit)
+        working-directory: example/android
+        run: ./gradlew :react-native-nitro-passkeys:testDebugUnitTest --no-daemon
+
       - name: Build Android APK
         working-directory: example/android
         run: |
