@@ -20,7 +20,7 @@ expose port `8787` through a tunnel (Cloudflare Tunnel, ngrok, ...) whose host i
 - `example/src/config.ts`: set `SERVER_URL` to `https://<RP_ID>`.
 - iOS: set the `PASSKEYS_RP_ID` build setting on the app target to `<RP_ID>`
   (the entitlement is `webcredentials:$(PASSKEYS_RP_ID)?mode=developer`, so
-  enable Developer Mode Associated Domains on the device), and sign with your team.
+  enable Associated Domains Development on the device), and sign with your team.
 - Android: the server reads the debug keystore fingerprint automatically.
 
 ## Environment

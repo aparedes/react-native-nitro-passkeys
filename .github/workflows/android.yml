@@ -1,14 +1,9 @@
 name: Build & Test Android
 
-# Merged from `android-build.yml` and the `test-android` job of
-# `harness-tests.yml`. Those two each took a runner and ran `assembleDebug`,
-# but on different single ABIs — `gradle.properties` defaults
-# `reactNativeArchitectures=arm64-v8a`, and the harness job overrode it to
-# x86_64 for the emulator. Everything around the native compile (Gradle
-# configuration, RN codegen, Kotlin, resources, dexing) was duplicated work.
-# One job now builds into the single `app-debug.apk` (no `splits` or
-# `abiFilters` are configured) and runs the harness against it. See
-# `ANDROID_ABIS` below for which ABIs, and when.
+# Builds the example app into a single `app-debug.apk` (no `splits` or
+# `abiFilters` are configured), runs the module's JUnit tests, then runs the
+# Android React Native Harness suite against the APK. See `ANDROID_ABIS` below
+# for which ABIs are built, and when.
 #
 # The job is named "Harness Tests (Android)" so a required status check on
 # `main` resolves to it.

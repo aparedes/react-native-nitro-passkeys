@@ -1,10 +1,7 @@
 name: Build & Test iOS
 
-# The example app build and the iOS harness run used to live in two workflows
-# (`ios-build.yml` and the `test-ios` job of `harness-tests.yml`), each spinning
-# up its own macOS runner to run a byte-identical `xcodebuild`. They are one job
-# now: the harness needs the built .app anyway, so building it twice bought
-# nothing. Triggers below are the union of what those two workflows watched.
+# Builds the example app, runs the native XCTest suite and the iOS React
+# Native Harness suite against the built .app on one macOS runner.
 #
 # The job is named "Harness Tests (iOS)" so a required status check on `main`
 # resolves to it.

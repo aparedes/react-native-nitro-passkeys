@@ -970,17 +970,18 @@ medium — standard.
 #### 1. Documentation sweep
 **Files**: `README.md`, `example/server/README.md`, `example/README.md` (CLI-generated boilerplate), comments in `src/*.ts`, `ios/*.swift` and `android/src/**/*.kt`, and `.github/workflows/*.yml` comments
 **Changes**:
-- [ ] Check every `README.md` statement against the deviation notes. Examples: harness coverage (if a spike case was dropped), iOS enum handling, the nitrogen patch, and the actual server env var names and defaults.
-- [ ] Update `example/server/README.md` to match `example/server/index.ts`: env vars, port, endpoints and the `--record` output paths
-- [ ] Replace the CLI boilerplate in `example/README.md` with a short pointer to the root README's example section. It describes a generic app, which is stale.
-- [ ] Update the CI workflow header comments copied from IP that mention image-pipeline, the fixture server or picsum
-- [ ] Sweep the run's full diff for other stale docs, such as source comments describing changed behaviour or leftover image-pipeline names (`git grep -n -i 'image.pipeline\|NitroImage\|shimmer'`). Update them, or record "no further drift".
+- [x] Check every `README.md` statement against the deviation notes. Examples: harness coverage (if a spike case was dropped), iOS enum handling, the nitrogen patch, and the actual server env var names and defaults.
+- [x] Update `example/server/README.md` to match `example/server/index.ts`: env vars, port, endpoints and the `--record` output paths
+- [x] Replace the CLI boilerplate in `example/README.md` with a short pointer to the root README's example section. It describes a generic app, which is stale.
+- [x] Update the CI workflow header comments copied from IP that mention image-pipeline, the fixture server or picsum
+- [x] Sweep the run's full diff for other stale docs, such as source comments describing changed behaviour or leftover image-pipeline names (`git grep -n -i 'image.pipeline\|NitroImage\|shimmer'`). Update them, or record "no further drift".
+  > Deviation: fixed drift in `example/README.md` (boilerplate replaced by a pointer), `example/server/README.md` ("Developer Mode Associated Domains" → "Associated Domains Development") and the `ios.yml`/`android.yml` header comments (removed history of non-existent `ios-build.yml`/`android-build.yml`/`harness-tests.yml`). Otherwise no further drift: root README, package.json/nitro.json/CHANGELOG, source comments. The iOS Settings > Developer menu name remains unverified against Apple docs.
 
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] No leftover template names: `git grep -n -i 'imagepipeline\|image-pipeline\|shimmer' -- ':!tasks/'` prints nothing (or only intentional attributions, noted)
-- [ ] Format still clean: `bunx oxfmt --check`
+- [x] No leftover template names: `git grep -n -i 'imagepipeline\|image-pipeline\|shimmer' -- ':!tasks/'` prints nothing (or only intentional attributions, noted)
+- [x] Format still clean: `bunx oxfmt --check`
 
 #### Manual Verification:
 - [ ] The updated docs read correctly and match the implemented behaviour
