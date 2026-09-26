@@ -546,7 +546,7 @@ crashes. Wrong base64url output breaks server credential lookup.
 
 #### 1. Base64URL codec
 **File**: `ios/Base64URL.swift`
-- [ ] Add `enum Base64URL` with:
+- [x] Add `enum Base64URL` with:
   - `static func encode(_ data: Data) -> String`: `base64EncodedString()`, then `+`→`-` and `/`→`_`, then strip every `=`
   - `static func decode(_ string: String) -> Data?`:
     - returns `nil` for input that is empty or contains any character outside `[A-Za-z0-9_-=]`, which includes `+`, `/` and whitespace
@@ -556,37 +556,38 @@ crashes. Wrong base64url output breaks server credential lookup.
 
 #### 2. Option and response JSON
 **File**: `ios/PasskeyJSON.swift`
-- [ ] `Decodable` structs for the fields iOS uses (unknown keys are ignored by default):
+- [x] `Decodable` structs for the fields iOS uses (unknown keys are ignored by default):
   - `CreationOptions { rp: RP; user: User; challenge: String; excludeCredentials: [Descriptor]?; authenticatorSelection: Selection?; attestation: String? }`
   - `RP { id: String? }`
   - `User { id: String; name: String; displayName: String? }`
   - `Descriptor { id: String }`
   - `Selection { userVerification: String? }`
   - `RequestOptions { challenge: String; rpId: String?; allowCredentials: [Descriptor]?; userVerification: String? }`
-- [ ] `Encodable` response structs matching the JSON in SPEC §4 step 7 (SPEC lines 430-442) and `get` step 5 (SPEC lines 464-477). Make `userHandle` a `String?`: the synthesized `encodeIfPresent` omits it when it is `nil`. Encode with `JSONEncoder` and `outputFormatting = [.withoutEscapingSlashes]`.
+- [x] `Encodable` response structs matching the JSON in SPEC §4 step 7 (SPEC lines 430-442) and `get` step 5 (SPEC lines 464-477). Make `userHandle` a `String?`: the synthesized `encodeIfPresent` omits it when it is `nil`. Encode with `JSONEncoder` and `outputFormatting = [.withoutEscapingSlashes]`.
 
 #### 3. Error token mapper
 **File**: `ios/PasskeyErrorToken.swift`
-- [ ] Add `enum PasskeyErrorToken`, a pure mapper with no UI, with `static func token(for error: Error) -> String`:
+- [x] Add `enum PasskeyErrorToken`, a pure mapper with no UI, with `static func token(for error: Error) -> String`:
   - `let ns = error as NSError`
   - if `ns.domain == ASAuthorizationError.errorDomain`:
     - if `ns.code == ASAuthorizationError.Code.failed.rawValue` (1004) **and** `isDomainNotAssociated(ns)`, return `"domainNotAssociated"`
     - otherwise return `"asauth-\(ns.code)"`. There is no availability check; 1006 comes through as `asauth-1006`.
   - otherwise return `"unknown"`
-- [ ] Add `static func isDomainNotAssociated(_ error: NSError) -> Bool`. It returns true if `"is not associated with domain"` appears in `error.localizedDescription`, in `error.userInfo[NSLocalizedFailureReasonErrorKey] as? String`, or, applied recursively, in `error.userInfo[NSUnderlyingErrorKey] as? NSError`. Keep this string match in this one place.
-- [ ] Add `static func message(token: String, _ text: String) -> String`, which returns `"[Passkeys:\(token)] \(text)"`
+- [x] Add `static func isDomainNotAssociated(_ error: NSError) -> Bool`. It returns true if `"is not associated with domain"` appears in `error.localizedDescription`, in `error.userInfo[NSLocalizedFailureReasonErrorKey] as? String`, or, applied recursively, in `error.userInfo[NSUnderlyingErrorKey] as? NSError`. Keep this string match in this one place.
+- [x] Add `static func message(token: String, _ text: String) -> String`, which returns `"[Passkeys:\(token)] \(text)"`
 
 #### 4. Hybrid object
 **File**: `ios/HybridNitroPasskeys.swift` (replace the stub bodies)
-- [ ] `var isSupported: Bool { true }`
-- [ ] **In-flight guard.** Use a private `NSLock` and a `private var active: PasskeyRequest?`.
+- [x] `var isSupported: Bool { true }`
+- [x] **In-flight guard.** Use a private `NSLock` and a `private var active: PasskeyRequest?`.
   - `create` and `get` first take the lock. If `active != nil`, return a rejected promise with `[Passkeys:unknown] A passkey request is already in progress`, without cancelling the first request.
   - Otherwise, store the new helper in `active` before any async work. This also retains the helper, because the controller holds its delegate weakly.
   - Clear `active` exactly once, when the request settles.
-- [ ] **Decoding.**
+- [x] **Decoding.**
+  > Deviation: option parsing lives in Sendable `RegistrationParameters`/`AssertionParameters` structs in `ios/PasskeyJSON.swift` (validated on the calling thread, before `active` is set); `RP` type renamed `RelyingParty` and response body structs un-nested (SwiftLint). Helper is `@MainActor` (both AS protocols are UI-actor isolated in the iOS 27 SDK). `HybridNitroPasskeys` is `@unchecked Sendable`, `active` only touched under the lock.
   - A `JSONDecoder` failure, or a `Base64URL.decode` that returns `nil` for the challenge, the user id or any excluded or allowed id, rejects with `[Passkeys:invalidOptions] …`.
   - A missing or empty `rp.id` (create) or `rpId` (get) also rejects with `invalidOptions`.
-- [ ] **create**, per SPEC §4 `create` steps 1–7 (SPEC lines 403-450):
+- [x] **create**, per SPEC §4 `create` steps 1–7 (SPEC lines 403-450):
   1. `ASAuthorizationPlatformPublicKeyCredentialProvider(relyingPartyIdentifier: rpID)`, then `createCredentialRegistrationRequest(challenge:name:userID:)`
   2. set `displayName` if it is non-empty
   3. `userVerificationPreference = .init(rawValue: uv)` when `authenticatorSelection.userVerification` is present
@@ -597,7 +598,7 @@ crashes. Wrong base64url output breaks server credential lookup.
      - If `rawAttestationObject` is `nil` or empty → `[Passkeys:unknown] Missing attestation object`.
      - Otherwise resolve with the encoded JSON: `id == rawId == Base64URL.encode(credentialID)`, `transports: ["internal","hybrid"]` and `clientExtensionResults: {}`.
      - `authenticatorAttachment`: when `#available(iOS 16.6, *)`, `.platform` → `"platform"`, `.crossPlatform` → `"cross-platform"`, and any other value → `"platform"`. Below 16.6 it is always `"platform"`.
-- [ ] **get**, per SPEC §4 `get` steps 1–5 (SPEC lines 454-481):
+- [x] **get**, per SPEC §4 `get` steps 1–5 (SPEC lines 454-481):
   1. `createCredentialAssertionRequest(challenge:)`
   2. `allowedCredentials` only if the list is non-empty
   3. set the UV preference in the same way as create
@@ -606,10 +607,10 @@ crashes. Wrong base64url output breaks server credential lookup.
      - If `rawAuthenticatorData` or `signature` is **empty** `Data`, reject `[Passkeys:unknown] Missing authenticator data` or `… signature`. These properties are non-null in the SDK.
      - Omit `userHandle` when `userID` is `nil` or empty.
      - `authenticatorAttachment` follows the same rule as create.
-- [ ] **Helper**: add a `private final class PasskeyRequest: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding`. It holds the `Promise<String>`, the anchor window, an `onSettle` closure that clears `active`, and a `settled` flag so the promise resolves or rejects at most once.
+- [x] **Helper**: add a `private final class PasskeyRequest: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding`. It holds the `Promise<String>`, the anchor window, an `onSettle` closure that clears `active`, and a `settled` flag so the promise resolves or rejects at most once.
   - `didCompleteWithAuthorization` builds the JSON as above.
   - `didCompleteWithError` rejects with `PasskeyErrorToken.message(token: PasskeyErrorToken.token(for: error), error.localizedDescription)`.
-- [ ] **Main thread and anchor**:
+- [x] **Main thread and anchor**:
   - Return `Promise<String>()` (the manual API) and do all UI work inside `DispatchQueue.main.async { … }`.
   - Resolve the anchor first. Use the key window of the first `UIWindowScene` with `activationState == .foregroundActive`. If there is none, fall back to the first window of any connected `UIWindowScene`. If there is still none, reject with `[Passkeys:unknown] No window to present on` and clear `active`.
   - Then create `ASAuthorizationController(authorizationRequests: [request])`, set the helper as both `delegate` and `presentationContextProvider`, and call `performRequests()`. Don't use `.preferImmediatelyAvailableCredentials`.
@@ -617,7 +618,8 @@ crashes. Wrong base64url output breaks server credential lookup.
 
 #### 5. XCTest target
 **Files**: `scripts/add-ios-test-target.rb`, `example/ios/Podfile`, `example/ios/NitroPasskeysExampleTests/*.swift`
-- [ ] Write `scripts/add-ios-test-target.rb` using the `xcodeproj` gem, and commit it. It adds a `NitroPasskeysExampleTests` unit-test bundle target to `example/ios/NitroPasskeysExample.xcodeproj`:
+- [x] Write `scripts/add-ios-test-target.rb` using the `xcodeproj` gem, and commit it. It adds a `NitroPasskeysExampleTests` unit-test bundle target to `example/ios/NitroPasskeysExample.xcodeproj`:
+  > Deviation: also sets `SWIFT_OBJC_INTEROP_MODE = objcxx` and `HEADER_SEARCH_PATHS += "${PODS_ROOT}/Headers/Private/NitroModules"` on the test target (C++-interop Swift modules); removes the pinned `Foundation.framework` ref the gem adds; deletes a stale `NitroPasskeysExampleTests` testable left in the scheme by the RN template before adding the real one.
   - host application `NitroPasskeysExample`, with `TEST_HOST` and `BUNDLE_LOADER` set
   - `IPHONEOS_DEPLOYMENT_TARGET = 16.0`
   - `GENERATE_INFOPLIST_FILE = YES`
@@ -626,7 +628,8 @@ crashes. Wrong base64url output breaks server credential lookup.
   - the target added to the `TestAction` testables of the shared `NitroPasskeysExample.xcscheme`
 
   Make the script idempotent: it exits 0 if the target already exists. Run it with `ruby scripts/add-ios-test-target.rb`.
-- [ ] In `example/ios/Podfile`, nest inside `target 'NitroPasskeysExample' do`:
+- [x] In `example/ios/Podfile`, nest inside `target 'NitroPasskeysExample' do`:
+  > Deviation: uses `inherit! :search_paths` instead of `:complete`: `:complete` linked every static pod into the test bundle twice, registering the NitroPasskeys HybridObject twice (abort). The test bundle resolves symbols via `BUNDLE_LOADER`.
   ```ruby
   target 'NitroPasskeysExampleTests' do
     inherit! :complete
@@ -639,33 +642,34 @@ crashes. Wrong base64url output breaks server credential lookup.
     t.build_configurations.each { |c| c.build_settings['ENABLE_TESTABILITY'] = 'YES' if c.name == 'Debug' }
   end
   ```
-- [ ] Add `example/ios/NitroPasskeysExampleTests/Base64URLTests.swift`, using `@testable import NitroPasskeys`:
+- [x] Add `example/ios/NitroPasskeysExampleTests/Base64URLTests.swift`, using `@testable import NitroPasskeys`:
+  > Deviation: `EnumRawValueTests` passed, so `(rawValue:)` stays (no switch fallback). Test target links with two `ld` warnings (XCTest built for iOS 17.0 vs deployment 16.0); harmless.
   - an encode round-trip for data lengths 0–6, which covers every remainder
   - no `=` in the output
   - `+` and `/` never appear in the output (use bytes `0xfb 0xff 0xbf`)
   - decode accepts both padded and unpadded input
   - decode rejects `+`, `/`, whitespace and length `% 4 == 1`
-- [ ] Add `PasskeyErrorTokenTests.swift`:
+- [x] Add `PasskeyErrorTokenTests.swift`:
   - `NSError(domain: ASAuthorizationError.errorDomain, code: n)` for n = 1000…1006 gives `asauth-<n>`. 1006 must give `asauth-1006`.
   - code 1004 with `NSLocalizedDescriptionKey` `"Application with identifier ABCDE.com.x is not associated with domain example.com"` → `domainNotAssociated`
   - the same text in `NSLocalizedFailureReasonErrorKey` → `domainNotAssociated`
   - the same text in an underlying error → `domainNotAssociated`
   - code 1004 with other text → `asauth-1004`
   - a non-ASAuthorization `NSError` → `unknown`
-- [ ] Add `EnumRawValueTests.swift`. It asserts that `ASAuthorizationPublicKeyCredentialUserVerificationPreference(rawValue: s) == .discouraged/.preferred/.required` for the matching WebAuthn string, and that `ASAuthorizationPublicKeyCredentialAttestationKind(rawValue:)` gives `.none/.direct/.indirect/.enterprise`. **If any assertion fails:** switch `HybridNitroPasskeys.swift` to an explicit `switch` mapping from the WebAuthn strings to those constants, keep the test (it now documents why), and record a `> Deviation:` note.
-- [ ] Run `bun run --cwd example pod`
+- [x] Add `EnumRawValueTests.swift`. It asserts that `ASAuthorizationPublicKeyCredentialUserVerificationPreference(rawValue: s) == .discouraged/.preferred/.required` for the matching WebAuthn string, and that `ASAuthorizationPublicKeyCredentialAttestationKind(rawValue:)` gives `.none/.direct/.indirect/.enterprise`. **If any assertion fails:** switch `HybridNitroPasskeys.swift` to an explicit `switch` mapping from the WebAuthn strings to those constants, keep the test (it now documents why), and record a `> Deviation:` note.
+- [x] Run `bun run --cwd example pod`
 
 #### 6. CI
 **File**: `.github/workflows/ios.yml`
-- [ ] After the build step, add a step `Unit tests (XCTest)` that runs the same `xcodebuild` invocation with `test` instead of `build`, keeping the workspace, the scheme and the `iPhone 17` destination.
+- [x] After the build step, add a step `Unit tests (XCTest)` that runs the same `xcodebuild` invocation with `test` instead of `build`, keeping the workspace, the scheme and the `iPhone 17` destination.
 
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] Pods: `bun run --cwd example pod`
-- [ ] XCTest: `xcodebuild test -workspace example/ios/NitroPasskeysExample.xcworkspace -scheme NitroPasskeysExample -destination 'platform=iOS Simulator,name=iPhone 17'`
-- [ ] The JS layer is unaffected: `bun test src`
-- [ ] Swift lint: `scripts/hooks/swiftlint.sh` (skip if `swiftlint` isn't installed, and say so)
+- [x] Pods: `bun run --cwd example pod`
+- [x] XCTest: `xcodebuild test -workspace example/ios/NitroPasskeysExample.xcworkspace -scheme NitroPasskeysExample -destination 'platform=iOS Simulator,name=iPhone 17'`
+- [x] The JS layer is unaffected: `bun test src`
+- [x] Swift lint: `scripts/hooks/swiftlint.sh` (skip if `swiftlint` isn't installed, and say so)
 
 #### Manual Verification:
 - [ ] Reading the code confirms the in-flight guard rejects a second call without cancelling the first, and every exit path clears `active`
