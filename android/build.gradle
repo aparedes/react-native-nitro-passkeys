@@ -143,7 +143,7 @@ dependencies {
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2" // CredentialManager APIs are suspend funs
 
   testImplementation "junit:junit:4.13.2"
-  testImplementation "org.json:json:20240303" // Android's org.json is a stub on the JVM
+  testImplementation "org.json:json:20260814" // Android's org.json is a stub on the JVM
 }
 
 if (isNewArchitectureEnabled()) {
