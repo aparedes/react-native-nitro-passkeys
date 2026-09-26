@@ -23,6 +23,12 @@ target 'NitroPasskeysExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Search paths only: the pods are static libraries already linked into the host app, and a
+  # second copy in the test bundle registers the NitroPasskeys HybridObject twice and aborts.
+  target 'NitroPasskeysExampleTests' do
+    inherit! :search_paths
+  end
+
   post_install do |installer|
     react_native_post_install(
       installer,
@@ -30,5 +36,11 @@ target 'NitroPasskeysExample' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # `@testable import NitroPasskeys` in NitroPasskeysExampleTests needs a testable Debug build.
+    installer.pods_project.targets.each do |t|
+      next unless t.name == 'NitroPasskeys'
+      t.build_configurations.each { |c| c.build_settings['ENABLE_TESTABILITY'] = 'YES' if c.name == 'Debug' }
+    end
   end
 end

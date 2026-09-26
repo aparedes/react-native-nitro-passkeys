@@ -141,6 +141,20 @@ jobs:
             build \
             CODE_SIGNING_ALLOWED=NO | xcpretty
 
+      - name: Unit tests (XCTest)
+        working-directory: example/ios
+        run: |
+          set -o pipefail && xcodebuild \
+            CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ \
+            -derivedDataPath build -UseModernBuildSystem=YES \
+            -workspace NitroPasskeysExample.xcworkspace \
+            -scheme NitroPasskeysExample \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
+            test \
+            CODE_SIGNING_ALLOWED=NO | xcpretty
+
       - name: Note skipped harness tests
         if: env.HARNESS_ENABLED != 'true'
         run: echo "::warning title=Harness tests skipped::The iOS harness suite did not run (RUN_HARNESS_TESTS is false). The app was still built."

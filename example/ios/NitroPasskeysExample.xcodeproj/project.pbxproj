@@ -7,25 +7,48 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		015B60169116FD8ABFDD0228 /* Base64URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A0CB03CCFF0E3F2F105839 /* Base64URLTests.swift */; };
 		0C80B921A6F3F58F76C31292 /* libPods-NitroPasskeysExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-NitroPasskeysExample.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		51FB9AEA842D14CC56C6E6DC /* EnumRawValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1127F505ADFAC74257EBACC /* EnumRawValueTests.swift */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
+		7C4225D57011019456B2D690 /* PasskeyErrorTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DE188E7CCEAB92DA253D68 /* PasskeyErrorTokenTests.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		AED8BE103E7AC64D6B8C1394 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6D2C761FB4EC72FA4CFA90 /* SceneDelegate.swift */; };
 		DA1BF3F974C0D6DE4245285F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		F06D651F1CDEB68A5C8DA51C /* libPods-NitroPasskeysExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B54250BA09DD6F974E3687B4 /* libPods-NitroPasskeysExampleTests.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CE07B9D78B9C96D1F954E0E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = NitroPasskeysExample;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		0B2E3177DA9AB85C9F2407D4 /* Pods-NitroPasskeysExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroPasskeysExampleTests.release.xcconfig"; path = "Target Support Files/Pods-NitroPasskeysExampleTests/Pods-NitroPasskeysExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* NitroPasskeysExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NitroPasskeysExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NitroPasskeysExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NitroPasskeysExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = NitroPasskeysExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		14B2EDD4F87A158FF0E31D9C /* NitroPasskeysExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NitroPasskeysExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-NitroPasskeysExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroPasskeysExample.debug.xcconfig"; path = "Target Support Files/Pods-NitroPasskeysExample/Pods-NitroPasskeysExample.debug.xcconfig"; sourceTree = "<group>"; };
+		44636A2230CC24A0DDF5EC95 /* Pods-NitroPasskeysExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroPasskeysExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-NitroPasskeysExampleTests/Pods-NitroPasskeysExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		54DE188E7CCEAB92DA253D68 /* PasskeyErrorTokenTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PasskeyErrorTokenTests.swift; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-NitroPasskeysExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroPasskeysExample.release.xcconfig"; path = "Target Support Files/Pods-NitroPasskeysExample/Pods-NitroPasskeysExample.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-NitroPasskeysExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NitroPasskeysExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = NitroPasskeysExample/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NitroPasskeysExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8F6D2C761FB4EC72FA4CFA90 /* SceneDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = NitroPasskeysExample/SceneDelegate.swift; sourceTree = "<group>"; };
+		95C027CFDB9BFAD9825B2D8D /* Pods-NitroPasskeysExample-NitroPasskeysExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroPasskeysExample-NitroPasskeysExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-NitroPasskeysExample-NitroPasskeysExampleTests/Pods-NitroPasskeysExample-NitroPasskeysExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B54250BA09DD6F974E3687B4 /* libPods-NitroPasskeysExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NitroPasskeysExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1127F505ADFAC74257EBACC /* EnumRawValueTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EnumRawValueTests.swift; sourceTree = "<group>"; };
+		E33A0AAC3EE33E738E04C96D /* Pods-NitroPasskeysExample-NitroPasskeysExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroPasskeysExample-NitroPasskeysExampleTests.release.xcconfig"; path = "Target Support Files/Pods-NitroPasskeysExample-NitroPasskeysExampleTests/Pods-NitroPasskeysExample-NitroPasskeysExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		E4A0CB03CCFF0E3F2F105839 /* Base64URLTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Base64URLTests.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -35,6 +58,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-NitroPasskeysExample.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA171691B86A244D6A91C103 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F06D651F1CDEB68A5C8DA51C /* libPods-NitroPasskeysExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,8 +90,20 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-NitroPasskeysExample.a */,
+				B54250BA09DD6F974E3687B4 /* libPods-NitroPasskeysExampleTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3979EA1601380B244F5C49AD /* NitroPasskeysExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				E4A0CB03CCFF0E3F2F105839 /* Base64URLTests.swift */,
+				D1127F505ADFAC74257EBACC /* EnumRawValueTests.swift */,
+				54DE188E7CCEAB92DA253D68 /* PasskeyErrorTokenTests.swift */,
+			);
+			name = NitroPasskeysExampleTests;
+			path = NitroPasskeysExampleTests;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -78,6 +121,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				3979EA1601380B244F5C49AD /* NitroPasskeysExampleTests */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -88,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* NitroPasskeysExample.app */,
+				14B2EDD4F87A158FF0E31D9C /* NitroPasskeysExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,6 +142,10 @@
 			children = (
 				3B4392A12AC88292D35C810B /* Pods-NitroPasskeysExample.debug.xcconfig */,
 				5709B34CF0A7D63546082F79 /* Pods-NitroPasskeysExample.release.xcconfig */,
+				E33A0AAC3EE33E738E04C96D /* Pods-NitroPasskeysExample-NitroPasskeysExampleTests.release.xcconfig */,
+				95C027CFDB9BFAD9825B2D8D /* Pods-NitroPasskeysExample-NitroPasskeysExampleTests.debug.xcconfig */,
+				0B2E3177DA9AB85C9F2407D4 /* Pods-NitroPasskeysExampleTests.release.xcconfig */,
+				44636A2230CC24A0DDF5EC95 /* Pods-NitroPasskeysExampleTests.debug.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -125,6 +174,25 @@
 			productReference = 13B07F961A680F5B00A75B9A /* NitroPasskeysExample.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D1C0F88415EEBC0BCD96EBAA /* NitroPasskeysExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 960C1C3BBA743844846C4C79 /* Build configuration list for PBXNativeTarget "NitroPasskeysExampleTests" */;
+			buildPhases = (
+				D4BD75C3AE67B27966AC769C /* [CP] Check Pods Manifest.lock */,
+				6387B6550E9EBAE2BBE5BC73 /* Sources */,
+				EA171691B86A244D6A91C103 /* Frameworks */,
+				DBAE6814C7C7E999F27D167C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17B1F19F4E5D4DA74705A5F7 /* PBXTargetDependency */,
+			);
+			name = NitroPasskeysExampleTests;
+			productName = NitroPasskeysExampleTests;
+			productReference = 14B2EDD4F87A158FF0E31D9C /* NitroPasskeysExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -135,6 +203,10 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					D1C0F88415EEBC0BCD96EBAA = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 				};
 			};
@@ -152,6 +224,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* NitroPasskeysExample */,
+				D1C0F88415EEBC0BCD96EBAA /* NitroPasskeysExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -164,6 +237,13 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				DA1BF3F974C0D6DE4245285F /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBAE6814C7C7E999F27D167C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +305,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D4BD75C3AE67B27966AC769C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NitroPasskeysExampleTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -254,7 +356,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6387B6550E9EBAE2BBE5BC73 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				015B60169116FD8ABFDD0228 /* Base64URLTests.swift in Sources */,
+				51FB9AEA842D14CC56C6E6DC /* EnumRawValueTests.swift in Sources */,
+				7C4225D57011019456B2D690 /* PasskeyErrorTokenTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		17B1F19F4E5D4DA74705A5F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = NitroPasskeysExample;
+			target = 13B07F861A680F5B00A75B9A /* NitroPasskeysExample */;
+			targetProxy = CE07B9D78B9C96D1F954E0E5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -312,6 +433,30 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		3D8FA6D6E7E0F545ECD1B190 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0B2E3177DA9AB85C9F2407D4 /* Pods-NitroPasskeysExampleTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Private/NitroModules\"",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nitropasskeysexample.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NitroPasskeysExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NitroPasskeysExample";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -471,6 +616,29 @@
 			};
 			name = Release;
 		};
+		D6856048E4E23E1FC956D8CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 44636A2230CC24A0DDF5EC95 /* Pods-NitroPasskeysExampleTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Private/NitroModules\"",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nitropasskeysexample.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NitroPasskeysExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NitroPasskeysExample";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -488,6 +656,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		960C1C3BBA743844846C4C79 /* Build configuration list for PBXNativeTarget "NitroPasskeysExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D8FA6D6E7E0F545ECD1B190 /* Release */,
+				D6856048E4E23E1FC956D8CF /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
